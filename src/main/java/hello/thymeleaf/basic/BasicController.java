@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpSessionRequiredException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
@@ -77,9 +78,62 @@ public class BasicController {
         return "basic/literal";
     }
 
+    @RequestMapping("/operation")
+    public String operation(Model model) {
+        model.addAttribute("nullData", null);
+        model.addAttribute("data","Spring");
+        return "basic/operation";
+
+    }
+    @RequestMapping("/attribute")
+    public String attribute(){
+        return "basic/attribute";
+    }
+
+    @RequestMapping("/each")
+    public String each(Model model) {
+        addUsers(model);
+        return "basic/each";
+    }
+
+    @GetMapping("/condition")
+    public String condition(Model model) {
+        addUsers(model);
+        return "basic/condition";
+    }
+
+    @GetMapping("/comments")
+    public String comments(Model model){
+        model.addAttribute("data", "Spring!");
+        return "/basic/comments";
+    }
+
+    @GetMapping("/block")
+    public String block(Model model) {
+        addUsers(model);
+        return "basic/block";
+    }
+
+    @GetMapping("/javascript")
+    public String javascript(Model model) {
+        model.addAttribute("user", new User("userA", 10));
+        addUsers(model);
+        return "basic/javascript";
+    }
+
+    private void addUsers(Model model) {
+        List<User> userList = new ArrayList<>();
+
+        userList.add(new User("userA", 10));
+        userList.add(new User("userB", 11));
+        userList.add(new User("userC", 32));
+
+        model.addAttribute("users", userList);
+    }
+
     @Component("helloBean")
     static class HelloBean {
-        public String hello(String data){
+        public String hello(String data) {
             return "Hello " + data;
         }
     }
